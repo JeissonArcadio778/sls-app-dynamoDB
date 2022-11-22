@@ -4,39 +4,41 @@ const { response, request } = require("express");
 const SimCardModel = require("../models/sim-card");
 
 const generateSimCard = async (req = request, res = response) => {
-  //Dates: id, estraking, fechas, iccid, msisdn, puk = null, serial, estado = SELECT, descError.
+  //Dates: id, estraking = true, fechas, iccid, msisdn, puk = null, serial, estado = SELECT, descError.
 
-  try {
-    const id = uuidv4(),
-      estado = "CREATED";
-    let msisdn = (Math.floor(Math.random() * 10000)).toString(),
-         iccid = (Math.floor(Math.random() * 10000)).toString(),
-           puk = 'null', 
-        serial = (Math.floor(Math.random() * 10000)).toString(),
-     descError = ''; 
+      try {
+      
+        const id = uuidv4(),
+          estado = "CREATED", 
+       estraking = true; 
 
-     const simCard = new SimCardModel ({
-        id, estado, msisdn, iccid, puk, serial, descError
-     })
 
-     await simCard.save(); 
+        let msisdn = (Math.floor(Math.random() * 10000)).toString(),
+             iccid = (Math.floor(Math.random() * 10000)).toString(),
+               puk = 'null', 
+            serial = (Math.floor(Math.random() * 10000)).toString(),
+         descError = '';  
 
-     console.log(simCard);
+        const simCard = new SimCardModel ({id, estado, msisdn, iccid, puk, serial, descError, estraking})
 
-     res.status(200).json({
-        status: true, 
-        message: 'Save: ' + JSON.stringify(simCard)
-     })
+        await simCard.save(); 
 
-  } catch (error) {
-    console.log(error);
-    console.error("Error al guardar en la DB");
-    res.status(400).json({
-      status: false,
-      message: "Guardado failed",
-    });
-  }
-};
+        console.log(simCard);
+
+        res.status(200).json({
+            status: true, 
+            message: 'Save: ' + JSON.stringify(simCard)
+        })
+
+      } catch (error) {
+        console.log(error);
+        console.error("Error al guardar en la DB");
+        res.status(400).json({
+          status: false,
+          message: "Guardado failed",
+        });
+      }
+    };
 
 
 module.exports = {

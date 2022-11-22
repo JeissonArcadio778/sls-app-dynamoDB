@@ -18,11 +18,21 @@ dynamoose.aws.ddb.local();
 
 const schema = new dynamoose.Schema(
   {
+    IndexName: "createdAt",
+    KeySchema: [
+            { AttributeName: "status", KeyType: "HASH" },
+            { AttributeName: "createdAt", KeyType: "RANGE" }
+        ],
+    Projection: { ProjectionType: "ALL" },
+    ProvisionedThroughpu: {
+          ReadCapacityUnits: 100,
+          WriteCapacityUnits: 100
+    },
     id: {
       type: String,
-      hashKey: true,
+      // hashKey: true,
     },
-    esTraking: Boolean, 
+    estraking: Boolean, 
     msisdn: String,
     iccid: {
       type: String,

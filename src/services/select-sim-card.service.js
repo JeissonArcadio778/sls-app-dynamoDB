@@ -46,22 +46,41 @@ const SimCardModel = require("../models/sim-card");
 const selectSimCard = async () => {
   
 try {
-    //Tabla completa
-    const results = await SimCardModel.scan().exec();
-    console.log(results);
+    
+    // Tabla completa: 
 
-    //Tabla solo esTraking = true y estado = CREATED
-    Cat.query("name").eq("Will").sort("ascending");
+    // const results = await SimCardModel.scan().exec();
+    // console.log(results);
+
+    //Tabla solo estraking = true y estado = CREATED
+    // const simCards = await SimCardModel.scan("estado").eq("CREATED").and().where("estraking").eq(true).exec();
+    // console.log(simCards);
+
+    const result = await SimCardModel.query({
+      TableName: "ms_leads_simcardsv2",
+      IndexName: "createdAt",
+      KeyConditionExpression: "#status = :status and #createdAt > :createdAt",
+      Limit: 5,
+      ExpressionAttributeValues: {
+        ":status": {
+          "S": "active"
+        },
+        ":createdAt": {
+          "S": "2020-12-10T15:00:00.000Z"
+        }
+      },
+      ExpressionAttributeNames: {
+        "#status": "status",
+        "#createdAt": "createdAt"
+      },
+    }).promise();
+
+    // console.log(result);
 
 
-    // const sim = SimCardModel.scan() // 1. scan the whole table
-    //   .descending() // 2. sort by descending by a date
-    //   .limit(100) // 3. limit the results to 100
-    //   .exec(function (error, data) {
-    //     // return error or data
-    //   });
+    //Obtener la SIM más antigua: 
 
-    //Obtener la SIM más antigua
+
 
     //Actualizar SIM: estado = 'SELECTED'
 
@@ -69,8 +88,9 @@ try {
 
     return {
       status: true,
-      data: results,
-      sim: sim,
+      // data: simCards,
+      // sim: sim,
+      result : result
     };
   } catch (error) {
     console.log(error);
