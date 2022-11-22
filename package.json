@@ -1,0 +1,20 @@
+{
+  "name": "vmco-lmd-bodega-sim-card",
+  "version": "1.0.0",
+  "description": "lambda de la bodega de sim cards",
+  "main": "app.js",
+  "dependencies": {
+    "aws-sdk": "^2.1256.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "dynamoose": "^2.8.8",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "nodemon src/app-local.js"
+  },
+  "author": "virgin-mobile",
+  "license": "MIT"
+}
