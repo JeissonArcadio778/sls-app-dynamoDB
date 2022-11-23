@@ -4,8 +4,8 @@ const { response, request } = require("express");
 const SimCardModel = require("../models/sim-card");
 
 const generateSimCard = async (req = request, res = response) => {
-  //Dates: id, estraking = true, fechas, iccid, msisdn, puk = null, serial, estado = SELECT, descError.
 
+  //Dates: id, estraking = true, fechas, iccid, msisdn, puk = null, serial, estado = SELECT, descError.
       try {
       
         const id = uuidv4(),
@@ -13,10 +13,10 @@ const generateSimCard = async (req = request, res = response) => {
        estraking = true; 
 
 
-        let msisdn = (Math.floor(Math.random() * 10000)).toString(),
-             iccid = (Math.floor(Math.random() * 10000)).toString(),
+        let msisdn = (Math.floor(Math.random() * 100000000)).toString(),
+             iccid = (Math.floor(Math.random() * 100000000)).toString(),
                puk = 'null', 
-            serial = (Math.floor(Math.random() * 10000)).toString(),
+            serial = (Math.floor(Math.random() * 100000000)).toString(),
          descError = '';  
 
         const simCard = new SimCardModel ({id, estado, msisdn, iccid, puk, serial, descError, estraking})

@@ -1,5 +1,5 @@
 // Selecciona una Sim Card que estan en estado CREATED ordenada por la fecha minima Virgin Mobile.
-
+const {SortOrder} = require("dynamoose/dist/General");
 const SimCardModel = require("../models/sim-card");
 
 //Busqueda en la DB buscando por estado y Estraking: lista
@@ -53,44 +53,28 @@ try {
     // console.log(results);
 
     //Tabla solo estraking = true y estado = CREATED
-    // const simCards = await SimCardModel.scan("estado").eq("CREATED").and().where("estraking").eq(true).exec();
-    // console.log(simCards);
+    const simCard = await SimCardModel.scan("estado").eq("CREATED").and().where("estraking").eq(true).exec();
+    // console.log(simCard);
 
-    const result = await SimCardModel.query({
-      TableName: "ms_leads_simcardsv2",
-      IndexName: "createdAt",
-      KeyConditionExpression: "#status = :status and #createdAt > :createdAt",
-      Limit: 5,
-      ExpressionAttributeValues: {
-        ":status": {
-          "S": "active"
-        },
-        ":createdAt": {
-          "S": "2020-12-10T15:00:00.000Z"
-        }
-      },
-      ExpressionAttributeNames: {
-        "#status": "status",
-        "#createdAt": "createdAt"
-      },
-    }).promise();
+    // const simCardQuery = await SimCardModel.query('estado').eq('CREATED').and().where('estraking').eq(true).exec(); 
+    // console.log(simCardQuery);
+    // const {} = simCard; 
 
-    // console.log(result);
+    //Uso de sort:
 
+    //Obtener la SIM más antigua:
 
-    //Obtener la SIM más antigua: 
+    //Actualizar SIM: estado = 'SELECTED': 
 
+    const simCardSelected = await SimCardModel.update({'id': simCard[0].id, 'estado' : 'SELECTED'});
 
-
-    //Actualizar SIM: estado = 'SELECTED'
-
-    //GUARDAR
+    console.log(simCardSelected);
 
     return {
       status: true,
-      // data: simCards,
+      data: simCardSelected,
       // sim: sim,
-      result : result
+      // result : results
     };
   } catch (error) {
     console.log(error);

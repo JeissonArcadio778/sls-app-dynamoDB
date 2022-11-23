@@ -18,31 +18,24 @@ dynamoose.aws.ddb.local();
 
 const schema = new dynamoose.Schema(
   {
-    IndexName: "createdAt",
-    KeySchema: [
-            { AttributeName: "status", KeyType: "HASH" },
-            { AttributeName: "createdAt", KeyType: "RANGE" }
-        ],
-    Projection: { ProjectionType: "ALL" },
-    ProvisionedThroughpu: {
-          ReadCapacityUnits: 100,
-          WriteCapacityUnits: 100
-    },
     id: {
       type: String,
-      // hashKey: true,
+      hashKey: true
     },
     estraking: Boolean, 
     msisdn: String,
-    iccid: {
-      type: String,
-    },
+    iccid: String,
     puk: String,
-    estado: String, 
+    estado: String,
+    status: Boolean,
+    serial: String
   },
-  { saveUnknown: ["actions.**"], 
-  "timestamps": true }, 
-  //Fecha de actualización
+  { 
+  saveUnknown: ["actions.**"], 
+    timestamps:  {
+    createdAt: 'fechaCreacion', 
+    updatedAt: 'fechaActualizacion'
+}}
 );
 
 const SimCardModel = dynamoose.model(SERVICES_TABLE, schema, {
