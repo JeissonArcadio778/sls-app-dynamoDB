@@ -1,4 +1,5 @@
 // Selecciona una Sim Card que estan en estado CREATED ordenada por la fecha minima Virgin Mobile.
+const { aws } = require("dynamoose");
 const {SortOrder} = require("dynamoose/dist/General");
 const SimCardModel = require("../models/sim-card");
 
@@ -46,35 +47,58 @@ const SimCardModel = require("../models/sim-card");
 const selectSimCard = async () => {
   
 try {
-    
-    // Tabla completa: 
 
+  console.log('Select Sim Card: ');
+  
     // const results = await SimCardModel.scan().exec();
     // console.log(results);
 
     //Tabla solo estraking = true y estado = CREATED
-    const simCard = await SimCardModel.scan("estado").eq("CREATED").and().where("estraking").eq(true).exec();
-    // console.log(simCard);
+    const simCardList = await SimCardModel.scan("estado").eq("CREATED").and().where("estraking").eq(true).exec();
+    // console.log(Array.isArray(simCardList));
 
-    // const simCardQuery = await SimCardModel.query('estado').eq('CREATED').and().where('estraking').eq(true).exec(); 
-    // console.log(simCardQuery);
-    // const {} = simCard; 
 
-    //Uso de sort:
+    //Organizar en orden de creación: 
 
-    //Obtener la SIM más antigua:
+    let awsList = []
+    
+    for (let i = 0; i < simCardList.length; i++) { 
+      awsList +=  simCardList[i].fechaCreacion;
+      // console.log(awsList);
+      
+    }
+    // Array.isArray(aws)
+    // console.log({awsList});
+
+    //Sacar el último registro.
+    lastSimCard = simCardList[simCardList.length - 1].id
+
+    SimCardModel.scan('fechaCreacion').gt(1669237170066).exec((err, customers) => {
+
+        if (err) {
+            console.log(err);
+        }
+        console.log({customers});
+    });
+
+    //TODO: Obtener la SIM más antigua: ¿cómo puedo saber en cómo está construida la tabla de DynamoDB? Es que necesito saber cómo está construida para saber cómo trabajo la manipulación de la SIM con fecha más antigua.
 
     //Actualizar SIM: estado = 'SELECTED': 
-
-    const simCardSelected = await SimCardModel.update({'id': simCard[0].id, 'estado' : 'SELECTED'});
-
+    const simCardSelected = await SimCardModel.update({'id': lastSimCard, 'estado' : 'SELECTED'});
+    
+    console.log('Sim Card seleccionada: ');
     console.log(simCardSelected);
+    //SEGUNDO INTENTO: sacar Query con fecha más reciente. 
+
+    // const simCardQuery = await SimCardModel.query('estado').eq('CREATED').where('estraking').eq(true).where('fechaCreacion').sort('ascending').exec(); 
+    // console.log(simCardQuery);    
+
+
 
     return {
       status: true,
-      data: simCardSelected,
-      // sim: sim,
-      // result : results
+      data: simCardList, simCardSelected
+
     };
   } catch (error) {
     console.log(error);
