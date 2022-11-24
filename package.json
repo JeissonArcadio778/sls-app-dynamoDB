@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "aws-sdk": "^2.1256.0",
+    "axios": "^1.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "dynamoose": "^2.8.8",

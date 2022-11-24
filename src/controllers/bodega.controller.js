@@ -25,14 +25,14 @@ const selectSimCardController = async (req,res) => {
 
     const responseSelectSim = await selectSimCard(req,res);
     
-    if (responseSelectSim.status) {
+    if (responseSelectSim.success) {
         res.status(200).json({
-            status: true, 
+            success: true, 
             data: responseSelectSim.data
         }) 
     } else {
         res.status(400).json({
-            status: false, 
+            success: false, 
             data: responseSelectSim.error
         }) 
     }
