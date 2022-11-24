@@ -28,7 +28,7 @@ const selectSimCardController = async (req,res) => {
     if (responseSelectSim.success) {
         res.status(200).json({
             success: true, 
-            data: responseSelectSim.data
+            data: responseSelectSim.simCard
         }) 
     } else {
         res.status(400).json({
@@ -39,7 +39,13 @@ const selectSimCardController = async (req,res) => {
     
 }
 
+
+const saveSimCardController  = async () => {
+
+}
+
 module.exports = {
     testDB, 
-    selectSimCardController
+    selectSimCardController, 
+    saveSimCardController
 }

@@ -11,8 +11,10 @@ const generateSimCard = async (req = request, res = response) => {
         const id = uuidv4(),
           estado = "CREATED", 
        estraking = true; 
-       
-        let msisdn = (Math.floor(Math.random() * 100000000)).toString(),
+        
+
+       let msisdn = '', //TODO: solicitar data
+        // let msisdn = (Math.floor(Math.random() * 100000000)).toString(),
              iccid = (Math.floor(Math.random() * 100000000)).toString(),
                puk = 'null', 
             serial = (Math.floor(Math.random() * 100000000)).toString(),
