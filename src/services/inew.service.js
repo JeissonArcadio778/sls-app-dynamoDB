@@ -21,8 +21,8 @@ const inewService = class{
                 }
             };
 
-            console.log(JSON.stringify(config_request, null, 4))
-            
+            // console.log(JSON.stringify(config_request, null, 4))
+            console.log({iccid});
             
             return await axios.post(postUrl + "/getSimDetailsByICCID", param, config_request)
             .then(function (response) {

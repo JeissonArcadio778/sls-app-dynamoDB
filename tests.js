@@ -1,2 +1,3 @@
-let msisdnGenerated = (Math.floor(Math.random() * 10000)).toString();
-    console.log({msisdnGenerated});
+let array = [1,2,3]
+
+console.log(array.length);

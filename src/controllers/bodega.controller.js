@@ -33,7 +33,7 @@ const selectSimCardController = async (req,res) => {
     } else {
         res.status(400).json({
             success: false, 
-            data: responseSelectSim.error
+            data: responseSelectSim.message
         }) 
     }
     
