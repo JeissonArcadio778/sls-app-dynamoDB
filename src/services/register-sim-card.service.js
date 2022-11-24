@@ -14,12 +14,15 @@
     
 
 const SimCardModel = require("../models/sim-card");
-
+const { v4: uuidv4 } = require("uuid");
 
 const saveSimCard = async (simCard) => {
 
         try {
-                    //Validaciones de Sim Card
+
+                    console.log('Inicio saveSimCard: ');
+
+                    //Validaciones de Sim Card:
                     if ( simCard == null || simCard.msisdn == null || simCard.iccid == null || simCard.serial == null ) {
                         console.log('Error saveSimCard. Revisar datos de simCard: ');
                         console.log({simCard});
@@ -27,18 +30,24 @@ const saveSimCard = async (simCard) => {
             
                     //Realizar consulta: 
                     const simCardDB = await SimCardModel.scan('msisdn').eq(simCard.msisdn).exec(); 
-            
-                    if ( simCardDB == null ) {
+                    
+                    if ( simCardDB.count == 0 ) {
                         
-                        const newState = (simCard.estraking)? 'CREATED' : 'SELECTED'; 
-                        const newSimCard = await SimCardModel.update({'id': simCard.id, 'estado' : newState});
+                        simCard.estado = (simCard.estraking)? 'CREATED' : 'SELECTED'; 
 
+                        const id = uuidv4(); 
+                        let estado = simCard.estado, msisdn = simCard.msisdn, iccid = simCard.iccid, puk = simCard.puk, serial = simCard.serial; 
+                        const newSimCard = new SimCardModel ({id, iccid, msisdn, puk, estado, serial })
+                        await newSimCard.save(); 
+            
                         console.log('SimCard guardada en base de datos: ');
                         console.log(newSimCard);
 
                         return {
+
                             success: true, 
-                            data: newSimCard
+                            simCard: newSimCard
+                        
                         }
             
                     } else {
