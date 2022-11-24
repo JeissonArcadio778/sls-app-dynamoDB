@@ -4,14 +4,14 @@ const axios = require('axios').default;
 
 const inewService = class{
    
-    async getSimDetailsByMSISDN(msisdn) {
+    async getSimDetailsByICCID(iccid) {
         try {
 
             let postUrl = config.config.inewcrm.url;
             let token = config.config.inewcrm.user;
 
             let param = {
-                "msisdn": msisdn
+                "iccid": iccid
             };
 
             const config_request = {
@@ -24,7 +24,7 @@ const inewService = class{
             console.log(JSON.stringify(config_request, null, 4))
             
             
-            return await axios.post(postUrl + "/getSimDetailsByMSISDN", param, config_request)
+            return await axios.post(postUrl + "/getSimDetailsByICCID", param, config_request)
             .then(function (response) {
                 return {
                     success: true,
@@ -44,7 +44,7 @@ const inewService = class{
             console.log(err);
             return {
                 "success": false,
-                "message": "Error getSimDetailsByMSISDN",
+                "message": "Error getSimDetailsByICCID",
                 "data": err
             }
         }

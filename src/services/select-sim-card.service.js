@@ -2,15 +2,13 @@
 const SimCardModel = require("../models/sim-card");
 const inew = require('../services/inew.service');
 
-//RESUMEN: SIMPLEMENTE LISTA TODO POR LA FECHA MINIMA Y SELECCIONA ESE ESA SIM: SELECCIONA ESA SIM Y LUEGO LA MUESTRA
-
 const selectSimCard = async () => {
   
 try {
 
           console.log('Select Sim Card: ');
     
-          //Tabla solo estraking = true y estado = CREATED
+          //Lista solo estraking = true y estado = CREATED
           const simCardList = await SimCardModel.scan("estado").eq("CREATED").and().where("estraking").eq(true).exec(); 
 
           //Organizar en orden de creación: 
@@ -40,27 +38,28 @@ try {
               //Scan de la simCard con Fecha más antigua: 
               lastSimCard = await SimCardModel.scan('fechaCreacion').eq(new Date(minimumDate).valueOf()).exec(); 
       
-              const result = inew.getSimDetailsByMSISDN(lastSimCard[0].msisdn); 
+              const result = inew.getSimDetailsByICCID(lastSimCard[0].iccid); 
 
-              if ( result != null && result.state != null && result.health != null ) {
+              if ( result.return != null && result.return.state != null && result.return.health != null ) {
 
-                  if (result != null && result.state == 'INSTALLED' && result.health == 'OK') {
+                  if (result.return != null && result.return.state == 'INSTALLED' && result.return.health == 'OK') {
 
-                        selectSimCard = true
+                        responseSimCard = true
 
-                  }else if ( result != null && result.state == 'INSTALLED' && result.health != 'OK' ) {
+                  }else if ( result.return != null && result.return.state == 'INSTALLED' && result.return.health != 'OK' ) {
                      
                         await SimCardModel.update({'id': lastSimCard[0].id, 'estado' : 'ERROR'});
                         awsList.pop(); 
                         count++
                   
                   } else {
-                      
+                        //TODO: ¿Por qué se actualiza este estado aqui? Porque ya ha sido usado por alguien. 
                         await SimCardModel.update({'id': lastSimCard[0].id, 'estado' : 'ACTIVATED'});
                         awsList.pop();
                         count++
                   
                     } 
+
               } else {
 
                   awsList.pop(); 
@@ -72,7 +71,7 @@ try {
         if ( responseSimCard ) {
 
               console.log('Sim Card seleccionada: ');
-              simCardSelected = await SimCardModel.update({'id': lastSimCard[0].id, 'estado' : 'SELECTED'});
+              simCardSelected = await SimCardModel.update({'id': lastSimCard[0].id, 'estado' : 'SELECT'});
               console.log({simCardSelected});
               
               return {
@@ -89,15 +88,15 @@ try {
 
         } 
 
-  } catch (error) {
+  } catch (err) {
 
-
-    console.log(error);
+    console.log(err);
     return {
       success: false,
-      error: JSON.stringify(error),
+      error: JSON.stringify(err),
       message: 'Error en selectSimCard'
     };
+
   }
 };
 

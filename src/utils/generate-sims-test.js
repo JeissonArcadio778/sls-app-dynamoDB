@@ -13,8 +13,8 @@ const generateSimCard = async (req = request, res = response) => {
        estraking = true; 
         
 
-       let msisdn = '', //TODO: solicitar data
-        // let msisdn = (Math.floor(Math.random() * 100000000)).toString(),
+      //  let iccid = '',
+        let msisdn = (Math.floor(Math.random() * 100000000)).toString(),
              iccid = (Math.floor(Math.random() * 100000000)).toString(),
                puk = 'null', 
             serial = (Math.floor(Math.random() * 100000000)).toString(),
