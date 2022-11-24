@@ -19,7 +19,6 @@ try {
                 awsList.push(data);
           }
     
-
         let responseSimCard = false, count = 0, lastSimCard;
         while (!responseSimCard && awsList.length > (count + 1)) {
           
@@ -31,22 +30,20 @@ try {
                 }
               })
               
-              //Transformar fecha a UNIX timestamp:
-              // let unixMinimumDate = new Date(minimumDate).valueOf();
-              // console.log({unixMinimumDate});
-          
               //Scan de la simCard con Fecha más antigua: 
               lastSimCard = await SimCardModel.scan('fechaCreacion').eq(new Date(minimumDate).valueOf()).exec(); 
       
-              const result = inew.getSimDetailsByICCID(lastSimCard[0].iccid); 
+              const result = await inew.getSimDetailsByICCID(lastSimCard[0].iccid); 
 
-              if ( result.return != null && result.return.state != null && result.return.health != null ) {
+              console.log(result.data.return);
 
-                  if (result.return != null && result.return.state == 'INSTALLED' && result.return.health == 'OK') {
+              if ( result.data.return != null && result.data.return.state != null && result.data.return.health != null ) {
+
+                  if ( result.data.return != null && result.data.return.state == 'INSTALLED' && result.data.return.health == 'OK') {
 
                         responseSimCard = true
 
-                  }else if ( result.return != null && result.return.state == 'INSTALLED' && result.return.health != 'OK' ) {
+                  }else if ( result.data.return != null && result.data.return.state == 'INSTALLED' && result.data.return.health != 'OK' ) {
                      
                         await SimCardModel.update({'id': lastSimCard[0].id, 'estado' : 'ERROR'});
                         awsList.pop(); 

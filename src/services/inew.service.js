@@ -7,7 +7,7 @@ const inewService = class{
     async getSimDetailsByICCID(iccid) {
         try {
 
-            let postUrl = config.config.inewcrm.url;
+            let postUrl = config.config.inewcrm.url; 
             let token = config.config.inewcrm.user;
 
             let param = {
@@ -28,7 +28,7 @@ const inewService = class{
             .then(function (response) {
                 return {
                     success: true,
-                    data: response.data
+                    data: response.data.data.getSimDetailsByICCIDResponse
                 };
             })
             .catch(function (error) {
