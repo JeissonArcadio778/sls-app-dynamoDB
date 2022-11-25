@@ -20,9 +20,6 @@ const inewService = class{
                 "Authorization": token,
                 }
             };
-
-            // console.log(JSON.stringify(config_request, null, 4))
-            console.log({iccid});
             
             return await axios.post(postUrl + "/getSimDetailsByICCID", param, config_request)
             .then(function (response) {

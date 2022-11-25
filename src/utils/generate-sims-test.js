@@ -12,7 +12,7 @@ const generateSimCard = async (req = request, res = response) => {
           estado = "CREATED", 
           estraking = true; 
             
-          let iccid = '8957123400912513613'
+          let iccid = '8957123400912539422'
           // let iccid = (Math.floor(Math.random() * 100000000)).toString(),
           msisdn = (Math.floor(Math.random() * 100000000)).toString(),
           puk = 'null', 

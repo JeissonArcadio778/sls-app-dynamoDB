@@ -39,7 +39,7 @@ const saveSimCard = async (simCard) => {
                         let estado = simCard.estado, msisdn = simCard.msisdn, iccid = simCard.iccid, puk = simCard.puk, serial = simCard.serial; 
                         const newSimCard = new SimCardModel ({id, iccid, msisdn, puk, estado, serial })
                         await newSimCard.save(); 
-            
+                        
                         console.log('SimCard guardada en base de datos: ');
                         console.log(newSimCard);
 

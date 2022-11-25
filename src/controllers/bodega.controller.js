@@ -27,6 +27,8 @@ const testDB = async (req, res) => {
 
 const selectSimCardController = async (req,res) => {
 
+    console.log('Inicio select Sim Card: '); 
+
     const responseSelectSim = await selectSimCard(req,res);
     
     if (responseSelectSim.success) {
@@ -46,6 +48,7 @@ const selectSimCardController = async (req,res) => {
 // Inicio save {"estraking":false,"iccid":"8957123400913302116","msisdn":"3195862514","puk":"57656441","serial":"8957123400913302116"}
 const saveSimCardController  = async (req = request, res) => {
 
+    console.log('Inicio save Sim Card: '); 
     const responseSaveSimCard = await saveSimCard(req.body); 
 
     if (responseSaveSimCard.success) {
