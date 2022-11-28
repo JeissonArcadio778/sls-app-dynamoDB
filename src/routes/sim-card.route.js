@@ -7,6 +7,8 @@ const router = Router();
 router.post('/', testDB); 
 router.get('/bodega/sim-card/select-sim-card', selectSimCardController); 
 router.post('/bodega/sim-card/save', saveSimCardController); 
+
+//Test - local
 router.get('/generate-sim', generateSimCard)
 
 

@@ -3,6 +3,8 @@ const { response, request } = require("express");
 
 const SimCardModel = require("../models/sim-card");
 
+
+//Generate data Test - local
 const generateSimCard = async (req = request, res = response) => {
 
   //Dates: id, estraking = true, fechas, iccid, msisdn, puk = null, serial, estado = SELECT, descError.

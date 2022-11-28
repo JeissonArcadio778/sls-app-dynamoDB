@@ -4,27 +4,6 @@ const { saveSimCard } = require('../services/register-sim-card.service');
 const { selectSimCard } = require('../services/select-sim-card.service');
 
 
-
-const testDB = async (req, res) => {
-
-    console.log('TestDB');
-
-    let id = '1234567890'
-    const simCard =  new SimCardModel({
-        id
-    })
-
-    await simCard.save(); 
-
-    console.log(simCard);
-
-    res.status(200).json({
-        msg: 'good!'
-    })
-    
-
-}
-
 const selectSimCardController = async (req,res) => {
 
     console.log('Inicio select Sim Card: '); 
@@ -49,7 +28,7 @@ const selectSimCardController = async (req,res) => {
 const saveSimCardController  = async (req = request, res) => {
 
     console.log('Inicio save Sim Card: '); 
-    
+
     const responseSaveSimCard = await saveSimCard(req.body); 
 
     if (responseSaveSimCard.success) {
@@ -64,6 +43,28 @@ const saveSimCardController  = async (req = request, res) => {
         }) 
     }
 
+}
+
+
+
+//Test - local
+const testDB = async (req, res) => {
+
+    console.log('TestDB');
+
+    let id = '1234567890'
+    const simCard =  new SimCardModel({
+        id
+    })
+
+    await simCard.save(); 
+
+    console.log(simCard);
+
+    res.status(200).json({
+        msg: 'good!'
+    })
+    
 }
 
 module.exports = {
