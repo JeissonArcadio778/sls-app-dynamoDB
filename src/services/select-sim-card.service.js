@@ -10,10 +10,10 @@ const selectSimCard = async () => {
           const simCardList = await SimCardModel.scan("estado").eq("CREATED").and().where("estraking").eq(true).exec(); 
           
           if (simCardList.count == 0 ) {
-              console.log('Error al listar en la base de datos.');
+              console.log('Error al listar en la base de datos. No existen registros que cumplan con el escaneo.');
               return {
                 success: false, 
-                message: 'Error al listar en la base de datos.'
+                message: 'Error al listar en la base de datos. No existen registros que cumplan con el escaneo.'
               }              
             }
 
@@ -32,15 +32,16 @@ const selectSimCard = async () => {
               let minimumDate = awsList[count]; 
 
               if (!minimumDate) {
+                  
                   return {
                     success: false, 
                     message: 'Error al seleccionar la Sim Card, no hay más registros en la DB.'
                   }
+              
               }
 
               //Scan de la simCard con Fecha más antigua: 
               lastSimCard = await SimCardModel.scan('fechaCreacion').eq(new Date(minimumDate).valueOf()).exec(); 
-      
               const result = await inew.getSimDetailsByICCID(lastSimCard[0].iccid); 
 
               console.log('Para este ICCID: ' + lastSimCard[0].iccid + ' se obtiene de getSimDeatils la siguiente respuesta: ');
@@ -53,7 +54,7 @@ const selectSimCard = async () => {
                         console.log('Encontrada: ' + lastSimCard[0].iccid); 
                         responseSimCard = true
 
-                  }else if ( result.data.return != null && result.data.return.state == 'INSTALLED' && result.data.return.health != 'OK' ) {
+                  } else if ( result.data.return != null && result.data.return.state == 'INSTALLED' && result.data.return.health != 'OK' ) {
                      
                         await SimCardModel.update({'id': lastSimCard[0].id, 'estado' : 'ERROR'});
                         count++
@@ -68,7 +69,7 @@ const selectSimCard = async () => {
                     } 
 
               } else {
-                  // console.log('No hay registro en DB con ese ICCID.');
+                  console.log('No hay registro en DB con ese ICCID.');
                   count++
                 } 
         }

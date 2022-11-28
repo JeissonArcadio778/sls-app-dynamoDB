@@ -1,17 +1,3 @@
-// Registra una Sim Card en Virgin Mobile
-
-
-//Entra una SimCard vía request.
-
-    //Validaciones de la SimCard
-
-    //Hago una busqueda en la DB por Msisdn. (para verificar que no exista)
-
-    // Si no existe: a la entidad se le cambia el estado dependiendo del esTraking que tenga: (V o f): created o SELECTED
-        //se guarda
-    
-    //Si existe: enviar un mensaje de existencia. 
-    
 
 const SimCardModel = require("../models/sim-card");
 const { v4: uuidv4 } = require("uuid");
@@ -28,7 +14,7 @@ const saveSimCard = async (simCard) => {
                         console.log({simCard});
                     }
             
-                    //Realizar consulta: 
+                    //Realizar consulta:
                     const simCardDB = await SimCardModel.scan('msisdn').eq(simCard.msisdn).exec(); 
                     
                     if ( simCardDB.count == 0 ) {
@@ -39,7 +25,7 @@ const saveSimCard = async (simCard) => {
                         let estado = simCard.estado, msisdn = simCard.msisdn, iccid = simCard.iccid, puk = simCard.puk, serial = simCard.serial; 
                         const newSimCard = new SimCardModel ({id, iccid, msisdn, puk, estado, serial })
                         await newSimCard.save(); 
-                        
+
                         console.log('SimCard guardada en base de datos: ');
                         console.log(newSimCard);
 

@@ -49,6 +49,7 @@ const selectSimCardController = async (req,res) => {
 const saveSimCardController  = async (req = request, res) => {
 
     console.log('Inicio save Sim Card: '); 
+    
     const responseSaveSimCard = await saveSimCard(req.body); 
 
     if (responseSaveSimCard.success) {
